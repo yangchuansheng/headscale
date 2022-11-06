@@ -1,6 +1,7 @@
 name: Build
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -29,14 +30,11 @@ jobs:
             config-example.yaml
 
       - uses: cachix/install-nix-action@v16
-        if: steps.changed-files.outputs.any_changed == 'true'
 
       - name: Run build
-        if: steps.changed-files.outputs.any_changed == 'true'
         run: nix build
 
       - uses: actions/upload-artifact@v2
-        if: steps.changed-files.outputs.any_changed == 'true'
         with:
           name: headscale-linux
           path: result/bin/headscale
